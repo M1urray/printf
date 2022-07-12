@@ -1,79 +1,76 @@
 #ifndef HOLBERTON_H
 #define HOLBERTON_H
 
-#include <stdarg.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
-#include <unistd.h>
-
-#define BUF_SIZE 1024
-#define BUF_FLUSH -1
-
-#define FLAGS_INIT {0, 0, 0, 0, 0}
+#include <stdarg.h>
 
 /**
- * struct flags - flags on / off
- * when used with a printf command
- * @plusf: on if plus_flag specified
- * @spacef: on if hashtag_flag specified
- * @hashtagf: on if _flag specified
- * @hmod: on if h_modifier is specified
- * @lmod: on if l_modifier is specified
- *
+ * struct flags - struct containing flags to "turn on"
+ * when a flag specifier is passed to _printf()
+ * @plus: flag for the '+' character
+ * @space: flag for the ' ' character
+ * @hash: flag for the '#' character
  */
 typedef struct flags
 {
-	unsigned int plusf;
-	unsigned int spacef;
-	unsigned int hashtagf;
-	unsigned int hmod;
-	unsigned int lmod;
+	int plus;
+	int space;
+	int hash;
 } flags_t;
 
 /**
- * struct specifier - Struct
- * @spec: specifier
- * @f: pointer to the function
+ * struct printHandler - struct to choose the right function depending
+ * on the format specifier passed to _printf()
+ * @c: format specifier
+ * @f: pointer to the correct printing function
  */
-typedef struct specifier
+typedef struct printHandler
 {
-	char spec;
+	char c;
 	int (*f)(va_list ap, flags_t *f);
-} specType;
+} ph;
 
-/* _put.c module */
-int _puts(char *str);
-int _putchar(int c);
+/* print_nums */
+int print_int(va_list l, flags_t *f);
+void print_number(int n);
+int print_unsigned(va_list l, flags_t *f);
+int count_digit(int i);
 
-/* _prinf.c module */
-int _printf(const char *format, ...);
+/* print_bases */
+int print_hex(va_list l, flags_t *f);
+int print_hex_big(va_list l, flags_t *f);
+int print_binary(va_list l, flags_t *f);
+int print_octal(va_list l, flags_t *f);
 
-/* get_print.c module */
-int (*getPrint(char s))(va_list, flags_t *);
-int getFlags(char s, flags_t *f);
-int getModifier(char s, flags_t *f);
-
-/* printAlpha.c module */
-int printStr(va_list ap, flags_t *f);
-int printChar(va_list ap, flags_t *f);
-int printModulo(va_list ap, flags_t *f);
-
-/* printNum.c module */
-int printInt(va_list ap, flags_t *f);
-int printUnsigned(va_list ap, flags_t *f);
+/* converter */
 char *convert(unsigned long int num, int base, int lowercase);
 
-/* printBases.c module */
-int printBinary(va_list ap, flags_t *f);
-int printHexL(va_list ap, flags_t *f);
-int printHexU(va_list ap, flags_t *f);
-int printOctal(va_list ap, flags_t *f);
-int printAddr(va_list ap, flags_t *f);
+/* _printf */
+int _printf(const char *format, ...);
 
-/* printAlpha_2.c module */
-int printReverse(va_list ap, flags_t *f);
-int printRot13(va_list ap, flags_t *f);
-int printS(va_list ap, flags_t *f);
+/* get_print */
+int (*get_print(char s))(va_list, flags_t *);
+
+/* get_flag */
+int get_flag(char s, flags_t *f);
+
+/* print_alpha */
+int print_string(va_list l, flags_t *f);
+int print_char(va_list l, flags_t *f);
+
+/* write_funcs */
+int _putchar(char c);
+int _puts(char *str);
+
+/* print_custom */
+int print_rot13(va_list l, flags_t *f);
+int print_rev(va_list l, flags_t *f);
+int print_bigS(va_list l, flags_t *f);
+
+/* print_address */
+int print_address(va_list l, flags_t *f);
+
+/* print_percent */
+int print_percent(va_list l, flags_t *f);
 
 #endif

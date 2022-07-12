@@ -1,52 +1,47 @@
-#include "main.h"
+#include "holberton.h"
 
 /**
- * _printf - prints
- * @format: the first parameter
- *
- * Return: number of printed char
+ * _printf - produces output according to a format
+ * @format: format string containing the characters and the specifiers
+ * Description: this function will call the get_print() function that will
+ * determine which printing function to call depending on the conversion
+ * specifiers contained into fmt
+ * Return: length of the formatted output string
  */
-
 int _printf(const char *format, ...)
 {
-	char *ptr, *start;
+	int (*pfunc)(va_list, flags_t *);
+	const char *p;
+	va_list arguments;
+	flags_t flags = {0, 0, 0};
 
-	flags_t fgs = FLAGS_INIT;
-	int cp = 0;
-	int (*pF)(va_list, flags_t *);
-	va_list ap;
+	register int count = 0;
 
-	va_start(ap, format);
+	va_start(arguments, format);
 	if (!format || (format[0] == '%' && !format[1]))
 		return (-1);
 	if (format[0] == '%' && format[1] == ' ' && !format[2])
 		return (-1);
-	for (ptr = (char *)format; *ptr; ptr++)
+	for (p = format; *p; p++)
 	{
-		if (*ptr == '%')
+		if (*p == '%')
 		{
-			ptr++;
-			if (*ptr == '%')
+			p++;
+			if (*p == '%')
 			{
-				cp += _putchar(*ptr);
+				count += _putchar('%');
 				continue;
 			}
-			start = ptr;
-			while (getFlags(*ptr, &fgs))
-				ptr++;
-			pF = getPrint(*ptr);
-			if (!pF)
-			{
-				cp += _putchar('%');
-				ptr = start - 1;
-			}
-			else
-				cp += pF(ap, &fgs);
-		}
-		else
-			cp += _putchar(*ptr);
+			while (get_flag(*p, &flags))
+				p++;
+			pfunc = get_print(*p);
+			count += (pfunc)
+				? pfunc(arguments, &flags)
+				: _printf("%%%c", *p);
+		} else
+			count += _putchar(*p);
 	}
-	_putchar(BUF_FLUSH);
-	va_end(ap);
-	return (cp);
+	_putchar(-1);
+	va_end(arguments);
+	return (count);
 }
