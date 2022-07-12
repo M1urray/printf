@@ -1,116 +1,107 @@
-# Projet printF
+# _printf
+```_printf``` is a custom implementation of the C programming function ```printf```. This project is an application of the C programming knowledge that [Holberton School](https://www.holbertonschool.com/) cohort 14 students have learned.
 
-## Table of content
+**Prototype:** ```int _printf(const char *, ...);```
 
-[What is this project](#What-is-this-project)
+## Some Examples
+**Integer**
+* Input: ```_printf("There are %i dozens in a gross\n", 12);```
+* Output: ```There are 12 dozens in a gross```
 
-[Building](#Building)
+**Character**
+* Input: ```_printf("The first letter in the alphabet is %c\n", 'A');```
+* Output: ```The first letter in the alphabet is A```
 
-[Usage](#Usage)
+**String**
+* Input: ```_printf("%s\n", 'This is a string.');```
+* Output: ```This is a string.```
 
-[Description of the implemented option](#Description-of-the-implemented-option)
+**Decimal:**
+* Input: ```_printf("%d\n", 1000);```
+* Output:  ```1000```
 
-[Description of the file structure](#Description-of-the-file-structure)
+**Rot13**
+* Input: ```_printf("Unknown:[%R]\n", "HELLO WORLD");```
+* Output:  ```URYYB JBEYQ```
 
-[Quick description of each function by file](#Quick-description-of-each-function-by-file)
+**FLAGS**
+* Input: ```printf("Flag: [%+ d]", 1230);```
+* Output:  ```Flag: [+1230] => 13```
 
-[Contributor](#Contributor)
-
-### What is this project 
-
-The aim of this project is to code a version based on the original printf function of the standard library `stdio.h`.
-Some functions and requirements are added to the original printf.😀
-
-### Building
-
-1 - Download the folder
-
-2 - Compile all the file .c with a compiler.🥳
-`gcc *.c`
-
-### Usage
+**OCTAL**
+* Input: ```printf("Unsigned octal:[%o]", 6);```
+* Output:  ```Unsigned octal:[6] => 18```
 
 
-To use the core function _printf, you can call it like the original printf, see man printf for more information.
 
-For example: 
-```
-char c = 'a';
+## Project Requirements
+* All files will be compiled on Ubuntu 14.04 LTS
+* Programs and functions will be compiled with gcc 4.8.4 using flags -Wall -Werror -Wextra and -pedantic
+* Code must follow the [Betty](https://github.com/holbertonschool/Betty/wiki) style
+* Global variables are not allowed
+* Authorized functions and macros:
+  * ```write``` (man 2 write)
+  * ```malloc``` (man 3 malloc)
+  * ```free``` (man 3 free)
+  * ```va_start``` (man 3 va_start)
+  * ```va_end``` (man 3 va_end)
+  * ```va_copy``` (man 3 va_copy)
+  * ```va_arg``` (man 3 va_arg)
 
-char b = 'd';
+## Mandatory Tasks
+- [x] Write function that produces output with conversion specifiers ```c```, ```s```, and ```%```.
+- [x] Handle conversion specifiers ```d```, ```i```.
+- [x] Create a man page for your function.
+## Advanced Tasks
+- [x] Handle conversion specifier ```b```.
+- [x] Handle conversion specifiers ```u```, ```o```, ```x```, ```X```.
+- [x] Use a local buffer of 1024 chars in order to call write as little as possible.
+- [x] Handle conversion specifier ```S```.
+- [x] Handle conversion specifier ```p```.
+- [x] Handle flag characters ```+```, space, and ```#``` for non-custom conversion specifiers.
+- [ ] Handle length modifiers ```l``` and ```h``` for non-custom conversion specifiers.
+- [ ] Handle the field width for non-custom conversion specifiers.
+- [ ] Handle the precision for non-custom conversion specifiers.
+- [ ] Handle the ```0``` flag character for non-custom conversion specifiers.
+- [x] Handle the custom conversion specifier ```r``` that prints the reversed string.
+- [x] Handle the custom conversion specifier ```R``` that prints the rot13'ed string.
+- [ ] All above options should work well together.
+## File Descriptions
+**_printf.c**
+* contains the  fucntion ```_printf```, which uses the prototype ```int _printf(const char *format, ...);```. The format string is composed of zero or more directives. See ```man 3 printf``` for more detail. **_printf** will return the number of characters printed (excluding the null byte used to end output to strings) and will write output to **stdout**, the standard output stream.
 
-_printf("My first string %c, my second string %c"), c, b);
+**_putchar.c**
+* contains the function ```_putchar```, which writes a character to stdout.
 
-OUTPUT : My first char a, my second char d
-```
-You can replace <%s> <%option> where option is any option of the man pages.💪
+**holberton.h**
+*contains all function prototypes used for ```_printf```.
 
-### Description of the implemented option
-👀
-%c - prints a character.
+**man_3_printf**
+* manual page for the custom ```_printf``` function.
 
-%s - prints a string.
+**functions.c** **functions1.c** **functions2.c**
+* contains all function of each specifier used for ```_printf```.
+* all function have its own description inside the file.
 
-%% - prints a %.
+**handle_print.c**
+* contains arguments types used for ```_printf```.
 
-%d, %i - prints an integer.
+**get_flags.c**
+* contains all function for each flag use for ```_printf```.
 
-%o, %b - respectively print a number in octal and binary base.
+**utils.c**
+* contains some necessary functionalities for ```_printf```.
 
-%x,  %X  - respecively print a number in lowercase and uppercase
-hexadecimal base.
+**ger_width.c**
+* contains functions to get width for spcifics spcifiers.
 
-%u - prints an unsigned integer.
-%S - handles non-printable characters: \x, followed by the ASCII
-       code value in uppercase hexadecimal.
+**writee_handlers.c**
+* contains write functions.
 
-%p - prints an address, given by a pointer variable.
+## Directory Descriptions
+**tests**
+* contains the test cases for ```_printf```.
 
-%r - prints a string in reverse.
+## Authors
+[Robert Kamau Njonjo](https://github.com/M1urray) | [Lawrence Mutethia](https://github.com/larry-techs)
 
-%R - prints a string in rot13 encryption
-
-### Description of the file structure
-👀
-| FileName | Description |
-|---|---|
-| man_3_printf  | This file contain the man pages of the printf function.  |
-| holberton.h  | This file is the header file.  |
-| _printf.c  | This file contains the core function _printf. |
-|  getPrint.c | This file contains the getPrint function used to find and call the needed function. It was created in order to make the code easier to read. |
-| _put.c  | This file contains the _putchar and _puts functions.  |
-| printAlpha.c  | This file contains all the string function : printChar, printStr, printModulo.  |
-| printAlpha_2.c | This file contains other string function : printReverse, printRot13, checkPrintChar, convertHexTwoChar, printS.  |
-| printBases.c  | This file contains all conversion functions : printAddr, printHexL, printHexU, printOctal, printBinary.  |
-| printAlpha.c  | This file contains all the string function : printChar, printStr, printModulo.  |
-| printNum.c  | This file contains all the printed number functions: printUnsigned and printInt. It also contain a converter from base 10 to a choosen base. |
-
-### Quick description of each function by file
-👀
-| File Name  | Function Name | Function Description  |
-|---|---|---|
-| _printf.c  | _printf  | Core function used to print into the standard output a string in which we can add some option like %s, %c... which refered to the passed arguments. See usage for more information.  |
-| _put.c  |  _putchar |  Function to display a character in the standard output. This function handle a buffer of size 1024 to optimize the printf function. |
-|   | _puts  |  Function to display a string in the standard output.
-| getPrint.c  | getPrint | Function which will select the good function depending of the passed option (selected with eh %) in the printf function.  |
-|   | getFlags  | Function which detect the flags |
-| printAlpha.c  | printChar  | Function used for the option %c in order to display a char.  |
-|   | printStr  | Function used for the option %s in order to display a string.  |
-|   |  printModulo | Function used for the option %% in order to display a %. This option is deprecated and is now handle if the core function _printf.  |
-| printAlpha_2.c  | printReverse  | Function used for the option %r in order to reverse a string.  |
-|   | printRot13  | Function used for the option %R in order to encrypte a string with the rot13 encryption ( rotate of + 13 character char, for example 'a' become 'n'.  |
-|   |  checkPrintChar | This function is used with the printS function inorder to know if a char can be printed or not.  |
-|   |  convertHexTwoChar |  This function is used with the printS function in order to convert a decimal number into an hexadcimale number of 2 character. |
-|   |  printS | Function used for the option %S in order to convert any non printable characters into \x followed the ASCII code value in hexadecimal.  |
-| printBases.c  | printAddr  | Function used for the option %p to print an adress.  |
-|   |  printHexL | Function used for the option %x to convert a number in decimal to its hexadecimal value in lowercase.  |
-|   | printHexU  | Function used for the option %X to convert a number in decimal to its hexadecimal value in uppercase.  |
-|   | printOctal  | Function used for the option %o to convert a number in decimal to its octale value.  |
-|   | printBinary  | Function used for the option %b to convert a number in decimal to its binary value.  |
-| printNum.c  | printUnsigned  | Function used for the option %u to print an unsigned number.  |
-|   | convert  | Function used by all the conversion functions and the printS function, in order to convert a decimal number into a choosen bases, handle until base 16.  |
-|   | printInt  | Function used for the option %i or %d in order to print an integer.  |
-
-### Contributor
-
-👬 This project was created by [Huy Nguyen](https://github.com/huy75) and [Olivier Guyot](https://github.com/toyugo) for Holberton school.
